@@ -7,7 +7,13 @@ app = FastAPI()
 
 @app.get("/user/id/")
 async def get_user(user_id: int):
-    users = get_data(user_id)
+    user_info = get_data(user_id)
+    return user_info
+
+
+@app.get("users/")
+async def get_all_users():
+    users = get_all_data()
     return users
 
 
