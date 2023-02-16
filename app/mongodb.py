@@ -8,26 +8,29 @@ conn_str = "mongodb://root:password@mongo_db:27017"
 client = pymongo.MongoClient(conn_str, server_api=ServerApi('1'), serverSelectionTimeoutMS=5000)
 
 mydb = client["mydatabase"]
-users = mydb["users"]
+users = mydb["users_data"]
 
 
 def insert_data(data: str):
     user_id: str = data.split()[0]
     user_info: str = " ".join(data.split()[1:])
     info: dict = {"user_id": user_id, "user_info": user_info}
+    print(info)
     result = users.insert_one(info)
     return result
 
 
 def get_data(id: int):
-    result: list = []
+    result: list = list()
     for element in users.find():
         if element['user_id'] == str(id):
-             result.append(element)
+            del element["_id"]
+            result.append(element)
     return result
 
 
+def get_all_data():
+    return users.find()
+
+
 print(get_data(6))
-
-
-
