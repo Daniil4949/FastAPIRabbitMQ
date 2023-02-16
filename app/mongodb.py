@@ -14,14 +14,16 @@ users = mydb["users"]
 def insert_data(data: str):
     user_id: str = data.split()[0]
     user_info: str = " ".join(data.split()[1:])
-    result = users.insert_one({"id": user_id, "user_info": user_info})
+    info: dict = {"user_id": user_id, "user_info": user_info}
+    result = users.insert_one(info)
     return result
 
 
 def get_data(id: int):
-    result = []
-    for element in users.find({}, {"user_id": str(id)}):
-            result.append(element)
+    result: list = []
+    for element in users.find():
+        if element['user_id'] == str(id):
+             result.append(element)
     return result
 
 
