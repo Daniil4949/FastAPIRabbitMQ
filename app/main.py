@@ -1,12 +1,13 @@
 import uvicorn
 from fastapi import FastAPI
+from app.mongodb import get_data
 
 app = FastAPI()
 
 
-@app.post("/user/")
+@app.get("/users/")
 async def create_user():
-    return {"user_id": 1}
+    return 'name'
 
 
 if __name__ == "__main__":

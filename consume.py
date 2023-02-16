@@ -2,6 +2,7 @@ import asyncio
 
 from aio_pika import connect
 from aio_pika.abc import AbstractIncomingMessage
+from app.mongodb import insert_data
 
 
 async def on_message(message: AbstractIncomingMessage) -> None:
@@ -10,12 +11,10 @@ async def on_message(message: AbstractIncomingMessage) -> None:
     Here it is to show that it's possible.
     """
     print(" [x] Received message %r" % message)
-    print("Message body is: %r" % message.body)
+    print("Message body is: %r" % message.body.decode())
     print("Before sleep!")
-    print(message.body.decode())
-    message = message.body.decode()
-    message = message.split()
-    print(message)
+    resource = insert_data(message.body.decode())
+    print(f" result!!! {resource}")
     await asyncio.sleep(5)  # Represents async I/O operations
     print("After sleep!")
 

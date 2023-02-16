@@ -10,6 +10,8 @@ kafka-python = "*"
 confluent-kafka = "*"
 pika = "*"
 aio-pika = "*"
+elasticsearch = "==7.17.3"
+pymongo = "*"
 
 [dev-packages]
 
