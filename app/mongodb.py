@@ -3,30 +3,34 @@ from pymongo.server_api import ServerApi
 import pymongo
 
 # Replace <connection string> with your MongoDB deployment's connection string.
-conn_str = "mongodb://root:password@172.20.0.2:27017"
+conn_str = "mongodb://root:password@mongo_db:27017"
 # Set the Stable API version on the client.
 client = pymongo.MongoClient(conn_str, server_api=ServerApi('1'), serverSelectionTimeoutMS=5000)
 
 mydb = client["mydatabase"]
-users = mydb["users"]
+users = mydb["users_data"]
 
 
 def insert_data(data: str):
     user_id: str = data.split()[0]
     user_info: str = " ".join(data.split()[1:])
-    print(user_info)
-    result = users.insert_one({user_id: user_info})
+    info: dict = {"user_id": user_id, "user_info": user_info}
+    print(info)
+    result = users.insert_one(info)
     return result
 
 
 def get_data(id: int):
-    result = []
-    for element in users.find({}, {"user_id": str(id)}):
+    result: list = list()
+    for element in users.find():
+        if element['user_id'] == str(id):
+            del element["_id"]
             result.append(element)
     return result
 
 
-# get_data(6)
+def get_all_data():
+    return users.find()
 
 
-
+print(get_data(6))
